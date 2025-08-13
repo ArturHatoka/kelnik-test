@@ -1,0 +1,77 @@
+@use 'fonts';
+@use 'reset';
+@use './_utils' as *;
+@use './_vars' as *;
+
+body {
+  font-family: 'PT Root UI', sans-serif;
+  background-color: $white-color;
+  color: $font-main-color;
+  font-size: $base-font-size;
+}
+
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 96px 80px;
+}
+
+.apartments {
+  display: flex;
+  flex-direction: row;
+  gap: 80px;
+
+  &__main {
+    flex: 2;
+  }
+
+  &__filter {
+    flex: 1;
+  }
+}
+
+@media (max-width: 1440px) {
+  .container {
+    max-width: 960px;
+    padding: 48px 54px;
+  }
+
+  .apartments {
+    gap: 28px;
+
+    &__main {
+      flex: 2;
+    }
+
+    &__filter {
+      flex: 1.25;
+    }
+  }
+}
+
+@media (max-width: 960px) {
+  .container {
+    max-width: 100%;
+    padding: 24px 28px;
+  }
+  .apartments {
+    flex-direction: column;
+    gap: 40px;
+
+    &__main {
+      display: contents;
+    }
+
+    &__title {
+      order: 1;
+    }
+
+    &__filter {
+      order: 2;
+    }
+
+    &__list {
+      order: 3;
+    }
+  }
+}
