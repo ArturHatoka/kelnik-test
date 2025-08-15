@@ -1,28 +1,26 @@
 <template>
   <div class="filter">
-    <VSelectButtons
-      v-model="filters.rooms"
-      :options="roomsOptions"
-    />
+    <VSkeleton v-if="apartmentsStore.isLoading" :lines="4"/>
+    <template v-else>
+      <VSelectButtons
+        v-model="filters.rooms"
+        :options="apartmentsStore.filterRoomsOptions"
+      />
 
-    <span>RANGE 1</span>
+      <span>RANGE 1</span>
 
-    <span>RANGE 2</span>
+      <span>RANGE 2</span>
 
-    <button class="btn btn-primary">
-      <span>Сбросить параметры</span>
-    </button>
+      <button class="btn btn-primary">
+        <span>Сбросить параметры</span>
+      </button>
+    </template>
   </div>
 </template>
 
 <script setup lang="ts">
-const roomsOptions = [
-  { label: '1к', value: 1 },
-  { label: '2к', value: 2 },
-  { label: '3к', value: 3 },
-  { label: '4к', value: 4, disabled: true },
-]
-
+import { useApartmentsStore } from '~/stores/apartments'
+const apartmentsStore = useApartmentsStore()
 const filters = {
   rooms: 3
 }

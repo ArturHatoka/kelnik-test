@@ -22,6 +22,7 @@ defineProps({
   &-h1 {
     font-size: px-to-rem(54);
     font-weight: bold;
+    line-height: 1;
   }
 }
 </style>

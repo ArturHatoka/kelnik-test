@@ -5,7 +5,7 @@
         Квартиры
       </VTitle>
       <div class="apartments__list">
-
+        <WGrid/>
       </div>
     </div>
     <div class="apartments__filter">
@@ -17,6 +17,7 @@
 <script setup lang="ts">
 import { useApartmentsStore } from '~/stores/apartments'
 import WFilter from "../widgets/WFilter.vue";
+import WGrid from "../widgets/WGrid.vue";
 
 const store = useApartmentsStore()
 const { loadData } = store

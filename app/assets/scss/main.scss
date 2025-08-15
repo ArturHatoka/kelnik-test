@@ -8,6 +8,7 @@ body {
   background-color: $white-color;
   color: $font-main-color;
   font-size: $base-font-size;
+  line-height: 1.5;
 }
 
 .container {
@@ -20,6 +21,10 @@ body {
   display: flex;
   flex-direction: row;
   gap: 80px;
+
+  &__title {
+    margin-bottom: 48px;
+  }
 
   &__main {
     flex: 2;
@@ -38,6 +43,10 @@ body {
 
   .apartments {
     gap: 28px;
+
+    &__title {
+      margin-bottom: 24px;
+    }
 
     &__main {
       flex: 2;
@@ -64,6 +73,7 @@ body {
 
     &__title {
       order: 1;
+      margin-bottom: 12px;
     }
 
     &__filter {
