@@ -3,17 +3,31 @@
     <VSkeleton v-if="apartmentsStore.isLoading" :lines="4"/>
     <template v-else>
       <VSelectButtons
-        v-model="filters.rooms"
+        v-model="apartmentsStore.filters.rooms"
         :options="apartmentsStore.filterRoomsOptions"
       />
 
-      <span>RANGE 1</span>
+      <VRange
+        v-model="apartmentsStore.filters.priceRange"
+        :min="1000000"
+        :max="20000000"
+        label="Стоимость квартиры, ₽"
+      />
 
-      <span>RANGE 2</span>
+      <VRange
+        v-model="apartmentsStore.filters.areaRange"
+        :min="10"
+        :max="300"
+        label="Площадь, м²"
+      />
 
-      <button class="btn btn-primary">
-        <span>Сбросить параметры</span>
-      </button>
+      <VButton
+        variant="clear"
+        @click="apartmentsStore.resetFilters()"
+        icon="cross"
+      >
+        Сбросить параметры
+      </VButton>
     </template>
   </div>
 </template>
@@ -21,9 +35,6 @@
 <script setup lang="ts">
 import { useApartmentsStore } from '~/stores/apartments'
 const apartmentsStore = useApartmentsStore()
-const filters = {
-  rooms: 3
-}
 </script>
 
 <style lang="scss" scoped>

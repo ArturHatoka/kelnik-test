@@ -4,6 +4,7 @@
       v-for="i in lines"
       :key="i"
       class="skeleton-item"
+      :style="{ height: `${height}px` }"
     />
   </div>
 </template>
@@ -13,6 +14,10 @@ defineProps({
   lines: {
     type: Number,
     default: 1
+  },
+  height: {
+    type: Number,
+    default: 30
   }
 })
 </script>
@@ -30,7 +35,6 @@ defineProps({
   background-size: 200% 100%;
   animation: skeleton-loading 1.5s infinite;
   border-radius: 4px;
-  height: 30px;
   width: 100%;
 }
 

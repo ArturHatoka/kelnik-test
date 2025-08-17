@@ -1,5 +1,10 @@
 <template>
-  <div class="apartments-grid">
+  <VSkeleton
+      v-if="apartmentsStore.isLoading"
+      :lines="20"
+      :height="50"
+  />
+  <div v-else class="apartments-grid">
     <div class="apartments-grid__row apartments-grid__row--header">
       <span>Планировка</span>
       <span>Квартира</span>
@@ -8,19 +13,25 @@
       <span>Цена, ₽</span>
     </div>
 
-    <div class="apartments-grid__row">
+    <div
+      class="apartments-grid__row"
+      v-for="apartment in apartmentsStore.visibleApartments"
+      :key="apartment.id"
+    >
       <div class="apartments-grid__image">
-        <img src="/img/n104.webp"/>
+        <img :src="apartment.layout" :alt="'Планировка ' + apartment.id"/>
       </div>
-      <span>3-комнатная №104</span>
-      <span>63,1</span>
-      <span>1 из 17 </span>
-      <span>6 630 500</span>
+      <span>{{ apartment.rooms }}-комнатная №{{ apartment.id }}</span>
+      <span>{{ apartment.area }}</span>
+      <span>{{ apartment.floor }} из 17 </span>
+      <span>{{ apartment.price }}</span>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { useApartmentsStore } from '~/stores/apartments'
+const apartmentsStore = useApartmentsStore()
 </script>
 
 <style lang="scss" scoped>

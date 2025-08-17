@@ -64,7 +64,6 @@ const inputName = computed(() => {
 })
 
 onMounted(() => {
-  console.log(props.modelValue)
 })
 
 const isChecked = (value: string | number) => {
