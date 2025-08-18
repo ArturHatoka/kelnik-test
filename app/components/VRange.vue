@@ -1,5 +1,5 @@
 <template>
-  <div class="v-range">
+  <div class="v-range" v-bind="$attrs">
     <label v-if="label" class="v-range__label">{{ label }}</label>
     <div class="v-range__options">
       <div class="v-range__option">
@@ -55,6 +55,10 @@ defineEmits(['update:modelValue'])
   display: flex;
   flex-direction: column;
   gap: 6px;
+
+  &__label {
+    font-size: 0.875em
+  }
 
   &__options {
     display: flex;

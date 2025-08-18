@@ -60,10 +60,12 @@ const buttonClasses = computed(() => [
 
   &--s {
     padding: 6px 16px;
+    font-size: px-to-rem(14);
   }
 
   &--m {
     padding: 8px 24px;
+    font-size: px-to-rem(16);
   }
 
   &__cross {

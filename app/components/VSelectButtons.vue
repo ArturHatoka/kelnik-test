@@ -1,5 +1,5 @@
 <template>
-  <div class="v-select-buttons">
+  <div class="v-select-buttons" v-bind="$attrs">
     <label v-if="label" class="v-select-buttons__label">{{ label }}</label>
     <div class="v-select-buttons__options">
       <label

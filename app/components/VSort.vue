@@ -4,6 +4,7 @@
     @click="toggleSort"
     role="button"
     :aria-pressed="isActive"
+    v-bind="$attrs"
   >
     <span
       class="v-sort__label"

@@ -8,6 +8,7 @@
       />
 
       <VRange
+        class="filter__range"
         v-model="apartmentsStore.filters.priceRange"
         :min="1000000"
         :max="20000000"
@@ -15,6 +16,7 @@
       />
 
       <VRange
+        class="filter__range"
         v-model="apartmentsStore.filters.areaRange"
         :min="10"
         :max="300"
@@ -22,6 +24,7 @@
       />
 
       <VButton
+       class="filter__clear"
         variant="clear"
         @click="apartmentsStore.resetFilters()"
         icon="cross"
@@ -46,5 +49,19 @@ const apartmentsStore = useApartmentsStore()
   padding: 40px;
   background: $green-gradient;
   border-radius: 10px;
+}
+
+@media (max-width: 1440px) {
+  .filter {
+    padding: 20px;
+
+    &__range {
+      font-size: px-to-rem(14);
+    }
+
+    &__clear {
+      font-size: px-to-rem(13);
+    }
+  }
 }
 </style>

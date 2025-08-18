@@ -2,6 +2,7 @@
   <component
     :is="variant"
     :class="['custom-' + variant]"
+    v-bind="$attrs"
   >
     <slot />
   </component>
