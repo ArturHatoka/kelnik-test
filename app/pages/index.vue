@@ -11,6 +11,7 @@
     <div class="apartments__filter">
       <WFilter/>
     </div>
+    <VScrollTop />
   </div>
 </template>
 
@@ -25,8 +26,4 @@ const { loadData } = store
 onMounted(async () => {
   await loadData()
 })
-
-onUnmounted(() => {
-})
-
 </script>

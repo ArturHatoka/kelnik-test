@@ -1,16 +1,37 @@
 <template>
   <VSkeleton
-      v-if="apartmentsStore.isLoading"
-      :lines="20"
-      :height="50"
+    v-if="apartmentsStore.isLoading"
+    :lines="20"
+    :height="50"
   />
-  <div v-else class="apartments-grid">
+  <div
+    v-else
+    class="apartments-grid"
+  >
     <div class="apartments-grid__row apartments-grid__row--header">
       <span>Планировка</span>
       <span>Квартира</span>
-      <span>S, м²</span>
-      <span>Этаж</span>
-      <span>Цена, ₽</span>
+      <VSort
+        :is-active="apartmentsStore.filters.sortBy === 'area'"
+        :sort-dir="apartmentsStore.filters.sortDir"
+        @update:sort="dir => handleSort('area', dir)"
+      >
+        S, м²
+      </VSort>
+      <VSort
+        :is-active="apartmentsStore.filters.sortBy === 'floor'"
+        :sort-dir="apartmentsStore.filters.sortDir"
+        @update:sort="dir => handleSort('floor', dir)"
+      >
+        Этаж
+      </VSort>
+      <VSort
+        :is-active="apartmentsStore.filters.sortBy === 'price'"
+        :sort-dir="apartmentsStore.filters.sortDir"
+        @update:sort="dir => handleSort('price', dir)"
+      >
+        Цена, ₽
+      </VSort>
     </div>
 
     <div
@@ -32,11 +53,14 @@
 <script setup lang="ts">
 import { useApartmentsStore } from '~/stores/apartments'
 const apartmentsStore = useApartmentsStore()
+
+function handleSort(field: 'area' | 'floor' | 'price', dir: 'asc' | 'desc') {
+  apartmentsStore.setSort(field, dir)
+}
 </script>
 
 <style lang="scss" scoped>
 .apartments-grid {
-
   &__row {
     display: grid;
     grid-template-columns: 1fr 3.5fr 1.5fr 1.5fr 1.5fr;

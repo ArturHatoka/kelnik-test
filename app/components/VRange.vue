@@ -4,16 +4,17 @@
     <div class="v-range__options">
       <div class="v-range__option">
         <span class="opacity--50">от </span>
-        <span>{{ splitBigNumber(localValue[0]) }}</span>
+        <span>{{ splitBigNumber(modelValue[0]) }}</span>
       </div>
       <div class="v-range__option">
         <span class="opacity--50">до </span>
-        <span>{{ splitBigNumber(localValue[1]) }}</span>
+        <span>{{ splitBigNumber(modelValue[1]) }}</span>
       </div>
     </div>
     <ClientOnly>
       <VueSlider
-        v-model="localValue"
+        :model-value="modelValue"
+        @update:model-value="$emit('update:modelValue', $event)"
         :min="min"
         :max="max"
         aria-label="ariaLabel"
@@ -27,7 +28,7 @@
 import VueSlider from 'vue-slider-component'
 import { splitBigNumber } from "~/helpers/utils";
 
-const props = defineProps({
+defineProps({
   modelValue: {
     type: Array as PropType<[number, number]>,
     required: true
@@ -46,17 +47,7 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['update:modelValue'])
-
-const localValue = ref(props.modelValue)
-
-watch(localValue, (newVal) => {
-  emit('update:modelValue', newVal)
-})
-
-watch(() => props.modelValue, (newVal) => {
-  localValue.value = newVal
-})
+defineEmits(['update:modelValue'])
 </script>
 
 <style lang="scss" scoped>

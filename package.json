@@ -19,5 +19,8 @@
     "vue-router": "^4.5.1",
     "vue-slider-component": "^4.1.0-beta.7"
   },
+  "devDependencies": {
+    "vite-svg-loader": "^5.1.0"
+  },
   "packageManager": "yarn@1.22.19+sha1.4ba7fc5c6e704fce2066ecbfb0b0d8976fe62447"
 }

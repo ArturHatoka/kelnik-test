@@ -10,77 +10,86 @@ interface Apartment {
 	layout: string
 }
 
+interface Filters {
+	rooms: number[]
+	areaRange: [number, number]
+	priceRange: [number, number]
+	sortBy: 'area' | 'floor' | 'price'
+	sortDir: 'asc' | 'desc'
+}
+
 export const useApartmentsStore = defineStore('apartments', () => {
 	const allApartments = ref<Apartment[]>([])
-	const filteredApartments = ref<Apartment[]>([])
+	
 	const visibleCount = ref(20)
 	const perPage = ref(20)
 	const isLoading = ref(false)
-	const filters = ref({
-		rooms: [] as number[],
-		areaRange: [33, 123] as [number, number],
-		priceRange: [5500000, 18900000] as [number, number],
-		sortBy: 'area' as 'area' | 'floor' | 'price',
-		sortDir: 'desc' as 'asc' | 'desc',
+	
+	const filters = ref<Filters>({
+		rooms: [],
+		areaRange: [33, 123],
+		priceRange: [5_500_000, 18_900_000],
+		sortBy: 'area',
+		sortDir: 'desc',
 	})
-	const uniqueRooms = computed(() =>  new Set(allApartments.value.map(ap => ap.rooms)))
+	
+	const filteredApartments = computed(() => {
+		return allApartments.value
+			.filter(ap => {
+				const roomsMatch = !filters.value.rooms.length || filters.value.rooms.includes(ap.rooms)
+				const areaMatch = ap.area >= filters.value.areaRange[0] && ap.area <= filters.value.areaRange[1]
+				const priceMatch = ap.price >= filters.value.priceRange[0] && ap.price <= filters.value.priceRange[1]
+				return roomsMatch && areaMatch && priceMatch
+			})
+			.sort((a, b) => {
+				const field = filters.value.sortBy
+				const dir = filters.value.sortDir
+				return dir === 'asc' ? a[field] - b[field] : b[field] - a[field]
+			})
+	})
+	
+	const visibleApartments = computed(() => filteredApartments.value.slice(0, visibleCount.value))
+	const hasMore = computed(() => visibleCount.value < filteredApartments.value.length)
+	
+	const uniqueRooms = computed(() => new Set(allApartments.value.map(a => a.rooms)))
+	const filterRoomsOptions = computed(() => [1, 2, 3, 4].map(n => ({ label: `${n}к`, value: n, disabled: !uniqueRooms.value.has(n) })))
 	
 	const loadData = async () => {
-		if (allApartments.value.length > 0) return
+		if (allApartments.value.length) return
+		
 		isLoading.value = true
-		setTimeout(async () => {
-			const response = await fetch('/data/apartments.json')
-			allApartments.value = await response.json()
-			isLoading.value = false
-			applyFilters()
-		}, 1500)
-	}
-	
-	const applyFilters = () => {
-		const filtered = allApartments.value.filter(ap => {
-			const roomsMatch = filters.value.rooms.length === 0 || filters.value.rooms.includes(ap.rooms);
-			const areaMatch = ap.area >= filters.value.areaRange[0] && ap.area <= filters.value.areaRange[1];
-			const priceMatch = ap.price >= filters.value.priceRange[0] && ap.price <= filters.value.priceRange[1];
-			return roomsMatch && areaMatch && priceMatch;
-		});
 		
-		filtered.sort((a, b) => {
-			let valA = a[filters.value.sortBy]
-			let valB = b[filters.value.sortBy]
-			return filters.value.sortDir === 'asc' ? valA - valB : valB - valA
-		})
+		await new Promise(res => setTimeout(res, 1500))
+		const response = await fetch('/data/apartments.json')
+		allApartments.value = await response.json()
 		
-		filteredApartments.value = filtered
-		visibleCount.value = perPage.value
+		isLoading.value = false
 	}
-	
-	watch(filters, () => {
-		applyFilters()
-	}, { deep: true })
 	
 	const showMore = () => {
 		visibleCount.value += perPage.value
 	}
 	
 	const resetFilters = () => {
-		filters.value.rooms = []
-		filters.value.areaRange = [33, 123]
-		filters.value.priceRange = [5500000, 18900000]
-		filters.value.sortBy = 'area'
-		filters.value.sortDir = 'desc'
-		applyFilters()
+		filters.value = {
+			rooms: [],
+			areaRange: [33, 123],
+			priceRange: [5_500_000, 18_900_000],
+			sortBy: 'area',
+			sortDir: 'desc',
+		}
+		
+		visibleCount.value = perPage.value
 	}
 	
-	const visibleApartments = computed(() => filteredApartments.value.slice(0, visibleCount.value))
-	const hasMore = computed(() => visibleCount.value < filteredApartments.value.length)
-	
-	const filterRoomsOptions = computed(() => [
-		{ label: '1к', value: 1, disabled: !uniqueRooms.value.has(1) },
-		{ label: '2к', value: 2, disabled: !uniqueRooms.value.has(2) },
-		{ label: '3к', value: 3, disabled: !uniqueRooms.value.has(3) },
-		{ label: '4к', value: 4, disabled: !uniqueRooms.value.has(4) },
-	])
-	
+	function setSort(field: 'area' | 'floor' | 'price', dir: 'asc' | 'desc') {
+		if (filters.value.sortBy !== field) {
+			filters.value.sortBy = field
+			filters.value.sortDir = 'asc'
+		} else {
+			filters.value.sortDir = dir
+		}
+	}
 	
 	return {
 		allApartments,
@@ -90,11 +99,11 @@ export const useApartmentsStore = defineStore('apartments', () => {
 		isLoading,
 		filters,
 		loadData,
-		applyFilters,
 		showMore,
 		resetFilters,
 		visibleApartments,
 		hasMore,
-		filterRoomsOptions
+		filterRoomsOptions,
+		setSort
 	}
 }, { persist: true })
