@@ -25,6 +25,7 @@
         variant="clear"
         @click="apartmentsStore.resetFilters()"
         icon="cross"
+        size="s"
       >
         Сбросить параметры
       </VButton>

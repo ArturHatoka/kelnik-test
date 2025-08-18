@@ -47,6 +47,16 @@
       <span>{{ apartment.floor }} из 17 </span>
       <span>{{ apartment.price }}</span>
     </div>
+
+    <div
+      v-if="apartmentsStore.hasMore"
+      class="apartments-grid__row apartments-grid__row--load-more"
+      @click="apartmentsStore.showMore"
+    >
+      <VButton>
+        Загрузить еще
+      </VButton>
+    </div>
   </div>
 </template>
 
@@ -72,6 +82,13 @@ function handleSort(field: 'area' | 'floor' | 'price', dir: 'asc' | 'desc') {
     &--header {
       font-size: px-to-rem(14);
       padding: 0 0 16px;
+    }
+
+    &--load-more {
+      border-bottom: none;
+      padding: 48px 0 0;
+      display: flex;
+      grid-template-columns: none;
     }
   }
 

@@ -1,24 +1,36 @@
 <template>
   <button
-    :class="['custom-button', 'custom-button--' + variant, icon ? 'custom-button__' + icon : '']"
+    :class="buttonClasses"
     v-bind="$attrs">
     <slot/>
   </button>
 </template>
 
 <script setup lang="ts">
-defineProps({
+const props = defineProps({
   variant: {
     type: String,
-    default: 'fill',
-    validator: (value: string) => ['fill', 'clear'].includes(value)
+    default: 'rounded',
+    validator: (value: string) => ['rounded', 'clear'].includes(value)
   },
   icon: {
     type: String,
     default: null,
     validator: (value: string) => ['cross'].includes(value)
-  }
+  },
+  size: {
+    type: String,
+    default: 'm',
+    validator: (value: string) => ['s', 'm'].includes(value),
+  },
 })
+
+const buttonClasses = computed(() => [
+  'custom-button',
+  `custom-button--${props.variant}`,
+  props.icon ? `custom-button__${props.icon}` : '',
+  `custom-button--${props.size}`,
+])
 </script>
 
 <style lang="scss" scoped>
@@ -26,28 +38,32 @@ defineProps({
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 16px;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
   width: fit-content;
+  background-color: transparent;
 
-  &--fill {
-    background-color: $main-dark-color;
-    color: $white-color;
-    border: none;
-    &:hover {
-      background-color: rgba($main-dark-color, 0.5);
-    }
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &--rounded {
+    border: 1px solid rgba($font-main-color, 0.2);
+    border-radius: 25px;
   }
 
   &--clear {
-    background-color: transparent;
     border: none;
+    background-color: transparent;
+  }
 
-    &:hover {
-      text-decoration: underline;
-    }
+  &--s {
+    padding: 6px 16px;
+  }
+
+  &--m {
+    padding: 8px 24px;
   }
 
   &__cross {
